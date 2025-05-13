@@ -12,7 +12,13 @@ import wandb
 from huggingface_hub import login
 import uuid
 
-BATCH_SIZE = 10
+hf_token = os.getenv("HF_TOKEN")
+if not hf_token:
+    raise ValueError("Please set the HF_TOKEN environment variable with your Hugging Face token")
+
+print(hf_token)
+
+BATCH_SIZE = 5
 EPOCHS = 10
 HF_USERNAME = "cantemizyurek"
 MODEL_ID = "Snowflake/snowflake-arctic-embed-l"
@@ -109,7 +115,6 @@ model.fit(
 
 print("Training Complete")
 
-token = os.environ.get("HF_TOKEN")
-login(token=token)
+login(token=hf_token)
 
 model.push_to_hub(f"{HF_USERNAME}/legal-ft-{uuid.uuid4()}")
